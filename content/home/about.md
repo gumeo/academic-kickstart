@@ -35,6 +35,6 @@ weight = 1
 
 # Biography
 
-I am currently employed as a postdoctoral researcher at *DTU Compute* in the **Image Analysis and Computer Graphics** group. I currently focus my research on Geometric Deep Learning ([gdl Journal Club](http://geo-dl.compute.dtu.dk)). In my PhD I worked primarily on methods and applications in the domain of statistical learning. My PhD thesis is titled [*Sparse Classification - Methods and Applications*](http://orbit.dtu.dk/ws/files/146993098/phd471_Einarsson_G.pdf).
+I just **left academia**. I will update this bio when I start the new position. All opinions are my own
 
-The summer of 2018 I will be staying at deCODE genetics in Reykjavik Iceland. I am back at DTU in the fall. I am part of the organizing committee for the group's yearly [summer school](http://optimization-image-analysis.compute.dtu.dk) with DIKU. This year the focus is on optimization in relation to image analysis. 
+I was employed as a postdoctoral researcher at *DTU Compute* in the **Image Analysis and Computer Graphics** group. I focused my research on Geometric Deep Learning ([gdl Journal Club](http://geo-dl.compute.dtu.dk)) and I did a short research stay at deCODE genetics, working on signal processing, image analysis and statistics. In my PhD I worked primarily on methods and applications in the domain of statistical learning. My PhD thesis is titled [*Sparse Classification - Methods and Applications*](http://orbit.dtu.dk/ws/files/146993098/phd471_Einarsson_G.pdf). Accompanying my thesis is the R-package [accSDA](https://github.com/gumeo/accSDA), also available on CRAN.
