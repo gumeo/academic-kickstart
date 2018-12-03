@@ -35,6 +35,6 @@ weight = 1
 
 # Biography
 
-I just **left academia**. I will update this bio when I start the new position. All opinions are my own
+Currently I am employed as a senior software engineer at [Oqton](https://www.oqton.com/), working with awesome talented people building *the operating system for intelligent factories*.
 
-I was employed as a postdoctoral researcher at *DTU Compute* in the **Image Analysis and Computer Graphics** group. I focused my research on Geometric Deep Learning ([gdl Journal Club](http://geo-dl.compute.dtu.dk)) and I did a short research stay at deCODE genetics, working on signal processing, image analysis and statistics. In my PhD I worked primarily on methods and applications in the domain of statistical learning. My PhD thesis is titled [*Sparse Classification - Methods and Applications*](http://orbit.dtu.dk/ws/files/146993098/phd471_Einarsson_G.pdf). Accompanying my thesis is the R-package [accSDA](https://github.com/gumeo/accSDA), also available on CRAN.
+Prior I was employed as a postdoctoral researcher at *DTU Compute* in the **Image Analysis and Computer Graphics** group. I focused my research on Geometric Deep Learning ([gdl Journal Club](http://geo-dl.compute.dtu.dk)) and I did a short research stay at deCODE genetics, working on signal processing, image analysis and statistics. In my PhD I worked primarily on methods and applications in the domain of statistical learning. My PhD thesis is titled [*Sparse Classification - Methods and Applications*](http://orbit.dtu.dk/ws/files/146993098/phd471_Einarsson_G.pdf). Accompanying my thesis is the R-package [accSDA](https://github.com/gumeo/accSDA), also available on CRAN.
