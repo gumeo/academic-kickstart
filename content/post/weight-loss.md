@@ -19,7 +19,7 @@ caption = ""
 preview = true
 +++
 
-# I have to loose weight
+# I have to lose weight
 
 The reasons I am going through some weightloss has some history behind it, so I'm going to briefly outline that.
 
@@ -31,7 +31,7 @@ The PCL ligament is the worst to be gone of these. It prevents the lower leg to 
 
 ## Physio Training and Diet
 
-The surgery fixed most of the difference in slack, but it takes a long time to recover from it. Now I'm almost a year post-surgery, and I have been in some pretty intense physio training to try to get the leg as strong as the healthy one. I still haven't started running, but one of the reasons for that is that running has a high impact on the knee joint, which scales with weight. My physical therapist said that when you run, the impact on the knee is four times the bodyweight. Not sure about the exact numbers, but it is definitaly true that the impact scales with weight. So loosing weight is a crucial part of the recovery process, such that I can hopefully get back to some of the sport activities I was doing prior to the accident.
+The surgery fixed most of the difference in slack, but it takes a long time to recover from it. Now I'm almost a year post-surgery, and I have been in some pretty intense physio training to try to get the leg as strong as the healthy one. I still haven't started running, but one of the reasons for that is that running has a high impact on the knee joint, which scales with weight. My physical therapist said that when you run, the impact on the knee is four times the bodyweight. Not sure about the exact numbers, but it is definitaly true that the impact scales with weight. So losing weight is a crucial part of the recovery process, such that I can hopefully get back to some of the sport activities I was doing prior to the accident.
 
 In terms of BMI, I was overweight (BMI 29), when I had the accident. My fat percentage was around 15%, so I was in pretty good shape. Note that BMI was designed to measure malnutrition, and doesn't take fat percentage into account, so quite a lot of athletes and people with more muscles will be measured as overweight, although they are in ok shape. After the surgery I had to use crutches and was not allowed to put weight on the leg for the first 12 weeks. I gained weight and at the end of the summer 2018, when I started walking, my BMI was 30.5. I was in the obese range, I had not been training anything intense for a year, so it was time to do something if I ever wanted to do sports again. 
 
@@ -63,7 +63,7 @@ Notice that the residuals are pretty big. You need to look at a trend of at leas
 
 Another thing I learned is that if I want to reach my weight goal of 82 kg, I cannot be lazy about what I eat, the middle period shows that. It might play into it that the middle period covers December, causing an abnormal increase in calorie consumption, (because of Christmas parties), but at least the trend is not going down, so I will have to focus to reach my goals, this is an effort.
 
-Also, if I want to reach my goal and maintain it, I have to be consistent. I will continue to track my weight after I reach my goal to make sure I don't slip again. Also, I do not see Huel as an option for consistency. I would maybe consider it for breakfast or lunch in between, but I would rather enjoy a cheewy dinner with my family. If you want to loose weight and stay healthy, it is a matter of choosing a healthier lifestyle, not investing in a fad.
+Also, if I want to reach my goal and maintain it, I have to be consistent. I will continue to track my weight after I reach my goal to make sure I don't slip again. Also, I do not see Huel as an option for consistency. I would maybe consider it for breakfast or lunch in between, but I would rather enjoy a cheewy dinner with my family. If you want to lose weight and stay healthy, it is a matter of choosing a healthier lifestyle, not investing in a fad.
 
 The slope for using Huel is slightly more agressive than the calorie restriction, but in the long term, calorie restriction is a more sustainable option, so I will continue with that.
 
