@@ -32,7 +32,7 @@ One could naively choose the faster method. Why even offer a slower alternative?
 
 ## Be careful
 
-After searching a bit more I found [this post](https://abseil.io/tips/112), which stresses how careful one should be with this decision. Which kind of tells you to be careful! To further stress the ambiguity of the matter, the google c++ style guide does not provide an explicit preference. However, in their section on [implicit conversion](https://google.github.io/styleguide/cppguide.html#Implicit_Conversions), it becomes clear that the decision between the two methods is not completely obvious. The following code should make it clear why `emplace_back` is not worth the risk: 
+After searching a bit more I found [this post](https://abseil.io/tips/112), which stresses how careful one should be with this decision. Which kind of tells you to be careful. To further stress the ambiguity of the matter, the google c++ style guide does not provide an explicit preference. However, in their section on [implicit conversion](https://google.github.io/styleguide/cppguide.html#Implicit_Conversions), it becomes clear that the decision between the two methods is not completely obvious. The following code should make it clear why `emplace_back` is not worth the risk: 
 
 
 ```{cpp}
@@ -81,7 +81,7 @@ What is the difference? For `emplace_back` we **forward the arguments to the con
 
 ## Why is this a problem?
 
-The problem is that we are unaware of the problem at compile-time. If this was not the intended behavior, we have caused a runtime error, which is generally harder to fix. Let us catch the issue somehow. You might wonder that some warning flags, e.g., `-Wall` could reveal the issue. However, the program compiles fine with `-Wall`. `-Wall` contains narrowing, but it does not contain conversion. Further, adding `-Wconversion` yields no warnings!
+The problem is that we are unaware of the problem at compile-time. If this was not the intended behavior, we have caused a runtime error, which is generally harder to fix. Let us catch the issue somehow. You might wonder that some warning flags, e.g., `-Wall` could reveal the issue. However, the program compiles fine with `-Wall`. `-Wall` contains narrowing, but it does not contain conversion. Further, adding `-Wconversion` yields no warnings.
 
 ```
 $ g++ -Wall -Wconversion test.cpp -o test
