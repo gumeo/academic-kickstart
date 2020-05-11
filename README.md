@@ -1,3 +1,7 @@
+# For building
+
+This currently works with hugo 0.4. There is something breaking in the newest hugo version (currently 0.7). I'm guessing it is because the theme is so far behind. Next time I write a post I will probably structure this "source" for the blog a bit differently and update to master or choose another theme.
+
 # Academic Kickstart
 
 **Academic** is a framework to help you create a beautiful website quickly. Perfect for personal, student, or academic websites. [Check out the latest demo](https://themes.gohugo.io/theme/academic/) of what you'll get in less than 10 minutes or [view the documentation](https://sourcethemes.com/academic/docs/).
