@@ -19,18 +19,20 @@ caption = ""
 preview = true
 +++
 
-# `emplace_back` vs `push_back`
+# Which to choose?
 
-I have repeatedly run into the choice of using `emplace_back` instead of `push_back` in C++. This short blog post serves as my take on this decision. In short, choose `push_back` and only later change to `emplace_back` if it provides significant speed improvements when profiling.
+tl;dr Choose `push_back` and only later change to `emplace_back` if it provides significant speed improvements when profiling.
 
-Both of the methods in the title, along with `insert` and `emplace`, are ways to insert data into standard library containers. `emplace_back` is for adding a single element to the dynamic array `std::vector`. There is a very subtle difference between the two:
+I have repeatedly run into the choice of using `emplace_back` instead of `push_back` in C++. This short blog post serves as my take on this decision.
+
+Both of the methods in the title, along with `insert` and `emplace`, are ways to insert data into standard library containers. `emplace_back` is for adding a single element to the dynamic array `std::vector`. There is a somewhat subtle difference between the two:
 
 1. `push_back calls` the constructor of the data that you intend to push and then pushes it to the container.
 2. `emplace_back` "constructs in place", so one skips an extra move operation, potentially creating faster bytecode.
 
-One could naively choose the faster method. Why even offer a slower alternative? Searching for the problem online yields a lengthy discussion on the [issue (emplace_back vs push_back)](https://stackoverflow.com/questions/4303513/push-back-vs-emplace-back). In summary, the discussion leans towards choosing the more efficient `emplace_back` to insert data into your container, but it is not completely clear.
+One could naively choose the faster method. Why even offer a slower alternative? Searching for the problem online yields a lengthy discussion on the [issue (emplace_back vs push_back)](https://stackoverflow.com/questions/4303513/push-back-vs-emplace-back). In summary, the discussion leans towards choosing the more efficient `emplace_back` to insert data into your container, however the reason it is not completely clear.
 
-## Be skeptical and careful, the devil is in the details!
+## Be critical and careful, the devil is in the details!
 
 After searching a bit more I found [this post](https://abseil.io/tips/112), which stresses how careful one should be with this decision. Which kind of tells you to be careful! To further stress the ambiguity of the matter, the google c++ style guide does not provide an explicit preference. However, in their section on [implicit conversion](https://google.github.io/styleguide/cppguide.html#Implicit_Conversions), it becomes clear that the decision between the two methods is not completely obvious. The following code should make it clear why `emplace_back` is not worth the risk: 
 
