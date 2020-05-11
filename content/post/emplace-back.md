@@ -19,8 +19,6 @@ caption = ""
 preview = true
 +++
 
-# Which to choose?
-
 tl;dr Choose `push_back` and only later change to `emplace_back` if it provides significant speed improvements when profiling.
 
 I have repeatedly run into the choice of using `emplace_back` instead of `push_back` in C++. This short blog post serves as my take on this decision.
