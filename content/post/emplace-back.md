@@ -81,13 +81,13 @@ What is the difference? For `emplace_back` we **forward the arguments to the con
 
 ## Why is this a problem?
 
-The problem is that this was not caught at compile time, and if this was not the intended behavior, we have caused a runtime error, which are generally harder to deal with. So let's catch this somehow! So you might think that you can just add some warning flags, e.g. `-Wall`. But this program compiles fine with `-Wall`. `-Wall` contains narrowing, but it does not contain conversion for some reason, so we can add `-Wconversion`, but it still compiles fine without any warnings!
+The problem is that we are unaware of the problem at compile-time. If this was not the intended behavior, we have caused a runtime error, which is generally harder to fix. Let us catch the issue somehow. You might wonder that some warning flags, e.g., `-Wall` could reveal the issue. However, the program compiles fine with `-Wall`. `-Wall` contains narrowing, but it does not contain conversion. Further, adding `-Wconversion` yields no warnings!
 
 ```
 $ g++ -Wall -Wconversion test.cpp -o test
 ```
 
-The problem is that this conversion is happening in a system header, so we also need `-Wsystem-headers` to catch this:
+The problem is that this conversion is happening in a system header, so we also need `-Wsystem-headers` to catch the issue.
 
 ```
 $ g++ -Wconversion -Wsystem-headers test.cpp -o test
@@ -128,7 +128,7 @@ In file included from /usr/include/c++/7/bits/basic_string.h:6361:0,
 
 ```
 
-And boom.... look at all that verbose output. Skimming through a sea of warnings, it would be rather tricky to nail this down.
+And there you have it - look at all the verbose output. The problem is not apparent from this wall of text for the uninitiated.
 
 ## `emplace_back` is a premature optimization.
 
