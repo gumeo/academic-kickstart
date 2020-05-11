@@ -21,18 +21,19 @@ preview = true
 
 # `emplace_back` vs `push_back`
 
-I have now run into the discussion of whether one should use `emplace_back` instead of `push_back` in C++ several times and I wanted to document my current view on it. In short, use `push_back` when implementing and do not change to `emplace_back` unless it shows significant improvements when profiling.
+I have repeatedly run into the choice of using `emplace_back` instead of `push_back` in C++. This short blog post serves as my take on this decision. In short, choose `push_back` and only later change to `emplace_back` if it provides significant speed improvements when profiling.
 
-[`emplace_back`](http://www.cplusplus.com/reference/vector/vector/emplace_back/) came with C++11, I'm not sure when it was introduced exactly. Both of these methods, (and `insert` and `emplace`), are ways to insert data into standard library containers. `emplace_back` is for the dynamic array `std::vector`. There is a very subtle difference between the two:
+Both of the methods in the title, along with `insert` and `emplace`, are ways to insert data into standard library containers. `emplace_back` is for adding a single element to the dynamic array `std::vector`. There is a very subtle difference between the two:
 
-1. `push_back` calls the constructor of the data that is being pushed, and then moves it to the container.
+1. `push_back calls` the constructor of the data that you intend to push and then pushes it to the container.
 2. `emplace_back` "constructs in place", so one skips an extra move operation, potentially creating faster bytecode.
 
-If you are new to C++, then this looks like an obvious choice. Pick the one that is faster, end of story, why should anyone even be using `push_back`... If you google this [`emplace_back` vs `push_back`](https://stackoverflow.com/questions/4303513/push-back-vs-emplace-back), then you are taken to an old stackoverflow question around the time this was introduced, where the conclusion is also that it is kind of obvious that you should use this more efficient way of inserting data into your container.
+One could naively choose the faster method. Why even offer a slower alternative? Searching for the problem online yields a lengthy discussion on the [issue (emplace_back vs push_back)](https://stackoverflow.com/questions/4303513/push-back-vs-emplace-back). In summary, the discussion leans towards choosing the more efficient `emplace_back` to insert data into your container, but it is not completely clear.
 
-## Be skeptical
+## Be skeptical and careful, the devil is in the details!
 
-After googling a bit more I found [this post](https://abseil.io/tips/112). Which kind of tells you to be careful! The google c++ styleguide does not explicitly state which of the two you should use. But if you read their bit on [implicit conversion](https://google.github.io/styleguide/cppguide.html#Implicit_Conversions), it is clear that this is not completely obvious. The following code should make it clear why this is risky business:
+After searching a bit more I found [this post](https://abseil.io/tips/112), which stresses how careful one should be with this decision. Which kind of tells you to be careful! To further stress the ambiguity of the matter, the google c++ style guide does not provide an explicit preference. However, in their section on [implicit conversion](https://google.github.io/styleguide/cppguide.html#Implicit_Conversions), it becomes clear that the decision between the two methods is not completely obvious. The following code should make it clear why `emplace_back` is not worth the risk: 
+
 
 ```{cpp}
 #include<vector>                                                                                                                                                                                                   
@@ -54,7 +55,7 @@ int main(){
 }
 ```
 
-So if I compile this with the commented out line **not commented out** I get:
+Uncommenting the line `data_vec.push_back(10)` yields the following compilation error.
 
 ```
 $ g++ test.cpp -o test
@@ -65,9 +66,10 @@ test.cpp:11:24: error: no matching function for call to ‘std::vector<std::vect
 ... Some more verbose diagnostic
 ```
 
-So we get an error. In the extra diagnostic we get `no known conversion for argument 1 from ‘int’ to ‘const value_type& {aka const std::vector<int>&}’`. So there is really no conversion here that makes sense.
+So we get an error. An extra diagnostic provides us with the following: `no known conversion for argument 1 from ‘int’ to ‘const value_type& {aka const std::vector<int>&}’`. So it seems there is no conversion here that makes sense.
 
-What is alarming is that if we comment out the trouble line, this works fine and when we run this we get:
+The compilation completes without errors if we comment out the trouble line. Running the code yields the following result:
+
 
 ```
 $ ./test
@@ -75,9 +77,9 @@ data_vec size: 1
 data_vec[0] size: 20
 ```
 
-So what was the difference? For `emplace_back` we **forward the arguments to the constructor**, adding a new `std::vector<int> new_vector_to_add(20)` to `data_vec`.
+What is the difference? For `emplace_back` we **forward the arguments to the constructor**, adding a new `std::vector<int> new_vector_to_add(20)` to `data_vec`.
 
-## So what is the issue?
+## Why is this a problem?
 
 The problem is that this was not caught at compile time, and if this was not the intended behavior, we have caused a runtime error, which are generally harder to deal with. So let's catch this somehow! So you might think that you can just add some warning flags, e.g. `-Wall`. But this program compiles fine with `-Wall`. `-Wall` contains narrowing, but it does not contain conversion for some reason, so we can add `-Wconversion`, but it still compiles fine without any warnings!
 
