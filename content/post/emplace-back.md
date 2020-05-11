@@ -34,9 +34,8 @@ One could naively choose the faster method. Why even offer a slower alternative?
 
 After searching a bit more I found [this post](https://abseil.io/tips/112), which stresses how careful one should be with this decision. Which kind of tells you to be careful. To further stress the ambiguity of the matter, the google c++ style guide does not provide an explicit preference. However, in their section on [implicit conversion](https://google.github.io/styleguide/cppguide.html#Implicit_Conversions), it becomes clear that the decision between the two methods is not completely obvious. The following code should make it clear why `emplace_back` is not worth the risk: 
 
-
 ```{cpp}
-#include<vector>                                                                                                                                                                                                   
+#include<vector>
 #include<iostream>
 
 int main(){
@@ -77,66 +76,11 @@ data_vec size: 1
 data_vec[0] size: 20
 ```
 
-What is the difference? For `emplace_back` we **forward the arguments to the constructor**, adding a new `std::vector<int> new_vector_to_add(20)` to `data_vec`.
+What is the difference? For `emplace_back` we **forward the arguments to the constructor**, adding a new `std::vector<int> new_vector_to_add(20)` to `data_vec`.  
 
-## Why is this a problem?
+## Another example with conversion
 
-The problem is that we are unaware of the problem at compile-time. If this was not the intended behavior, we have caused a runtime error, which is generally harder to fix. Let us catch the issue somehow. You might wonder that some warning flags, e.g., `-Wall` could reveal the issue. However, the program compiles fine with `-Wall`. `-Wall` contains narrowing, but it does not contain conversion. Further, adding `-Wconversion` yields no warnings.
-
-```
-$ g++ -Wall -Wconversion test.cpp -o test
-```
-
-The problem is that this conversion is happening in a system header, so we also need `-Wsystem-headers` to catch the issue.
-
-```
-$ g++ -Wconversion -Wsystem-headers test.cpp -o test
-In file included from /usr/include/c++/7/vector:60:0,
-                 from test.cpp:1:
-/usr/include/c++/7/bits/stl_algobase.h: In function ‘constexpr int std::__lg(int)’:
-/usr/include/c++/7/bits/stl_algobase.h:1001:44: warning: conversion to ‘int’ from ‘long unsigned int’ may alter its value [-Wconversion]
-   { return sizeof(int) * __CHAR_BIT__  - 1 - __builtin_clz(__n); }
-                                            ^
-/usr/include/c++/7/bits/stl_algobase.h: In function ‘constexpr unsigned int std::__lg(unsigned int)’:
-/usr/include/c++/7/bits/stl_algobase.h:1005:44: warning: conversion to ‘unsigned int’ from ‘long unsigned int’ may alter its value [-Wconversion]
-   { return sizeof(int) * __CHAR_BIT__  - 1 - __builtin_clz(__n); }
-                                            ^
-In file included from /usr/include/c++/7/bits/stl_algobase.h:63:0,
-                 from /usr/include/c++/7/vector:60,
-                 from test.cpp:1:
-/usr/include/c++/7/ext/numeric_traits.h: In instantiation of ‘const short int __gnu_cxx::__numeric_traits_integer<short int>::__min’:
-/usr/include/c++/7/bits/istream.tcc:138:54:   required from here
-/usr/include/c++/7/ext/numeric_traits.h:58:35: warning: conversion to ‘short int’ alters ‘int’ constant value [-Wconversion]
-       static const _Value __min = __glibcxx_min(_Value);
-                                   ^~~~~~~~~~~~~
-In file included from /usr/include/c++/7/bits/basic_string.h:6361:0,
-                 from /usr/include/c++/7/string:52,
-                 from /usr/include/c++/7/bits/locale_classes.h:40,
-                 from /usr/include/c++/7/bits/ios_base.h:41,
-                 from /usr/include/c++/7/ios:42,
-                 from /usr/include/c++/7/ostream:38,
-                 from /usr/include/c++/7/iostream:39,
-                 from test.cpp:2:
-/usr/include/c++/7/ext/string_conversions.h: In instantiation of ‘_Ret __gnu_cxx::__stoa(_TRet (*)(const _CharT*, _CharT**, _Base ...), const char*, const _CharT*, std::size_t*, _Base ...) [with _TRet = long int; _Ret = int; _CharT = char; _Base = {int}; std::size_t = long unsigned int]’:
-/usr/include/c++/7/bits/basic_string.h:6373:19:   required from here
-/usr/include/c++/7/ext/string_conversions.h:88:8: warning: conversion to ‘int’ from ‘long int’ may alter its value [-Wconversion]
-  __ret = __tmp;
-        ^
-/usr/include/c++/7/ext/string_conversions.h: In instantiation of ‘_Ret __gnu_cxx::__stoa(_TRet (*)(const _CharT*, _CharT**, _Base ...), const char*, const _CharT*, std::size_t*, _Base ...) [with _TRet = long int; _Ret = int; _CharT = wchar_t; _Base = {int}; std::size_t = long unsigned int]’:
-/usr/include/c++/7/bits/basic_string.h:6479:19:   required from here
-/usr/include/c++/7/ext/string_conversions.h:88:8: warning: conversion to ‘int’ from ‘long int’ may alter its value [-Wconversion]
-
-```
-
-And there you have it - look at all the verbose output. The problem is not apparent from this wall of text for the uninitiated.
-
-## `emplace_back` is a premature optimization.
-
-Going from `push_back` to `emplace_back` is a small change that can usually wait. For safety, reliability, and maintainability reasons, it is better to write the code with `push_back`. This choice reduces the chance of pushing an unwanted hard to find implicit conversion into the codebase. Profiling the code might reveal opportunities to replace some `push_back` calls with `emplace_back`, but remember when optimizing to tread carefully.
-
-## A longer example
-
-The example above is very simple, and does not really show why we need conversion warnings, it is more to show the difference of forwarding arguments to the value type constructor or not. The following example I added in an [SO question](https://stackoverflow.com/questions/61592849/no-narrowing-warnings-when-using-emplace-back-instead-of-push-back) shows a bit more subtle case where `emplace_back` could make us miss catching a conversion from `double` to `int`.
+The example above is very simple and shows the difference of forwarding arguments to the value type constructor or not. The following example I added in an [SO question](https://stackoverflow.com/questions/61592849/no-narrowing-warnings-when-using-emplace-back-instead-of-push-back) shows a bit more subtle case where `emplace_back` could make us miss catching a conversion from `double` to `int`.
 
 ```{cpp}
 #include <vector>
@@ -150,4 +94,44 @@ int main() {
   a_vec.emplace_back(foo); // No warning with Wconversion
   A a(foo); // Gives compiler warning with Wconversion as expected
 }
+```      
+
+## Why is this a problem?
+
+The problem is that we are unaware of the problem at compile-time. If this was not the intended behavior, we have caused a runtime error, which is generally harder to fix. Let us catch the issue somehow. You might wonder that some warning flags, e.g., `-Wall` could reveal the issue. However, the program compiles fine with `-Wall`. `-Wall` contains narrowing, but it does not contain conversion. Further, adding `-Wconversion` yields no warnings.
+
 ```
+$ g++ -Wall -Wconversion test_2.cpp -o test
+```
+
+The problem is that this conversion is happening in a system header, so we also need `-Wsystem-headers` to catch the issue.
+
+```
+$ g++ -Wconversion -Wsystem-headers test_2.cpp 
+In file included from /usr/include/c++/7/vector:60:0,
+                 from test_2.cpp:1:
+/usr/include/c++/7/bits/stl_algobase.h: In function ‘constexpr int std::__lg(int)’:
+/usr/include/c++/7/bits/stl_algobase.h:1001:44: warning: conversion to ‘int’ from ‘long unsigned int’ may alter its value [-Wconversion]
+   { return sizeof(int) * __CHAR_BIT__  - 1 - __builtin_clz(__n); }
+                                            ^
+/usr/include/c++/7/bits/stl_algobase.h: In function ‘constexpr unsigned int std::__lg(unsigned int)’:
+/usr/include/c++/7/bits/stl_algobase.h:1005:44: warning: conversion to ‘unsigned int’ from ‘long unsigned int’ may alter its value [-Wconversion]
+   { return sizeof(int) * __CHAR_BIT__  - 1 - __builtin_clz(__n); }
+                                            ^
+In file included from /usr/include/x86_64-linux-gnu/c++/7/bits/c++allocator.h:33:0,
+                 from /usr/include/c++/7/bits/allocator.h:46,
+                 from /usr/include/c++/7/vector:61,
+                 from test_2.cpp:1:
+/usr/include/c++/7/ext/new_allocator.h: In instantiation of ‘void __gnu_cxx::new_allocator<_Tp>::construct(_Up*, _Args&& ...) [with _Up = A; _Args = {double&}; _Tp = A]’:
+/usr/include/c++/7/bits/alloc_traits.h:475:4:   required from ‘static void std::allocator_traits<std::allocator<_Tp1> >::construct(std::allocator_traits<std::allocator<_Tp1> >::allocator_type&, _Up*, _Args&& ...) [with _Up = A; _Args = {double&}; _Tp = A; std::allocator_traits<std::allocator<_Tp1> >::allocator_type = std::allocator<A>]’
+/usr/include/c++/7/bits/vector.tcc:100:30:   required from ‘void std::vector<_Tp, _Alloc>::emplace_back(_Args&& ...) [with _Args = {double&}; _Tp = A; _Alloc = std::allocator<A>]’
+test_2.cpp:9:25:   required from here
+/usr/include/c++/7/ext/new_allocator.h:136:4: warning: conversion to ‘int’ from ‘double’ may alter its value [-Wfloat-conversion]
+  { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+```
+
+And there you have it - look at all the verbose output. The problem is not apparent from this wall of text for the uninitiated.
+
+## `emplace_back` is a premature optimization.
+
+Going from `push_back` to `emplace_back` is a small change that can usually wait. For safety, reliability, and maintainability reasons, it is better to write the code with `push_back`. This choice reduces the chance of pushing an unwanted hard to find implicit conversion into the codebase. Profiling the code might reveal opportunities to replace some `push_back` calls with `emplace_back`, but remember when optimizing to tread carefully.
