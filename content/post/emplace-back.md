@@ -25,8 +25,8 @@ I have repeatedly run into the choice of using `emplace_back` instead of `push_b
 
 Both of the methods in the title, along with `insert` and `emplace`, are ways to insert data into standard library containers. `emplace_back` is for adding a single element to the dynamic array `std::vector`. There is a somewhat subtle difference between the two:
 
-1. `push_back calls` the constructor of the data that you intend to push and then pushes it to the container.
-2. `emplace_back` "constructs in place", so one skips an extra move operation, potentially creating faster bytecode.
+1. `push_back` calls the constructor of the data that you intend to push and then pushes it to the container.
+2. `emplace_back` "constructs in place", so one skips an extra move operation, potentially creating faster bytecode. This is done by forwarding the arguments to the container's template type constructor.
 
 One could naively choose the faster method. Why even offer a slower alternative? Searching for the problem online yields a lengthy discussion on the [issue (emplace_back vs push_back)](https://stackoverflow.com/questions/4303513/push-back-vs-emplace-back). In summary, the discussion leans towards choosing the more efficient `emplace_back` to insert data into your container, however the reason it is not completely clear.
 
@@ -49,8 +49,8 @@ int main(){
   std::vector<std::vector<int>> data_vec;
   //data_vec.push_back(10); // Throws error!!!!
   data_vec.emplace_back(20); // Compiles with no issue
-  std::cout << "data_vec size: " << data_vec.size() << std::endl;
-  std::cout << "data_vec[0] size: " << data_vec[0].size() << std::endl;
+  std::cout << "data_vec size: " << data_vec.size() << "\n";
+  std::cout << "data_vec[0] size: " << data_vec[0].size() << "\n";
   return 0;
 }
 ```
