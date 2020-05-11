@@ -136,7 +136,7 @@ Going from `push_back` to `emplace_back` is a small change that can usually wait
 
 ## A longer example
 
-The example above is very simple, and does not really show why we need conversion warnings. The following example I added in an [SO question](https://stackoverflow.com/questions/61592849/no-narrowing-warnings-when-using-emplace-back-instead-of-push-back) shows a bit more subtle case:
+The example above is very simple, and does not really show why we need conversion warnings, it is more to show the difference of forwarding arguments to the value type constructor or not. The following example I added in an [SO question](https://stackoverflow.com/questions/61592849/no-narrowing-warnings-when-using-emplace-back-instead-of-push-back) shows a bit more subtle case where `emplace_back` could make us miss catching a conversion from `double` to `int`.
 
 ```{cpp}
 #include <vector>
