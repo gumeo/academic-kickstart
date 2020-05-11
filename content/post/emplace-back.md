@@ -132,4 +132,4 @@ And there you have it - look at all the verbose output. The problem is not appar
 
 ## `emplace_back` is a premature optimization.
 
-Going from `push_back` to `emplace_back` is a small change that can wait. For safety, reliability and maintainability reasons, it is better to write the code with `push_back`. This reduces the chance of pushing an unwanted hard to find implicit conversion into the codebase. When one can finally get to profiling the code, this is an opportunity to replace some of those `push_back` with `emplace_back` if there is any significant gain.
+Going from `push_back` to `emplace_back` is a small change that can usually wait. For safety, reliability, and maintainability reasons, it is better to write the code with `push_back`. This choice reduces the chance of pushing an unwanted hard to find implicit conversion into the codebase. Profiling the code might reveal opportunities to replace some `push_back` calls with `emplace_back`, but remember when optimizing to tread carefully.
