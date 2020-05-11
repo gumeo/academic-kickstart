@@ -133,3 +133,21 @@ And there you have it - look at all the verbose output. The problem is not appar
 ## `emplace_back` is a premature optimization.
 
 Going from `push_back` to `emplace_back` is a small change that can usually wait. For safety, reliability, and maintainability reasons, it is better to write the code with `push_back`. This choice reduces the chance of pushing an unwanted hard to find implicit conversion into the codebase. Profiling the code might reveal opportunities to replace some `push_back` calls with `emplace_back`, but remember when optimizing to tread carefully.
+
+## A longer example
+
+The example above is very simple, and does not really show why we need conversion warnings. The following example I added in an [SO question](https://stackoverflow.com/questions/61592849/no-narrowing-warnings-when-using-emplace-back-instead-of-push-back) shows a bit more subtle case:
+
+```{cpp}
+#include <vector>
+class A {
+ public:
+  explicit A(int /*unused*/) {}
+};
+int main() {
+  double foo = 4.5;
+  std::vector<A> a_vec{};
+  a_vec.emplace_back(foo); // No warning with Wconversion
+  A a(foo); // Gives compiler warning with Wconversion as expected
+}
+```
