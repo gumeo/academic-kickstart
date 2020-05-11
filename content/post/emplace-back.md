@@ -21,7 +21,7 @@ preview = true
 
 # `emplace_back` vs `push_back`
 
-I have now ran into the discussion of whether one should use `emplace_back` instead of `push_back` in C++ several times and I wanted to document my current view on it.
+I have now run into the discussion of whether one should use `emplace_back` instead of `push_back` in C++ several times and I wanted to document my current view on it.
 
 [`emplace_back`](http://www.cplusplus.com/reference/vector/vector/emplace_back/) came with C++11, I'm not sure when it was introduced exactly. Both of these methods, (and `insert` and `emplace`), are ways to insert data into standard library containers. `emplace_back` is for the dynamic array `std::vector`. There is a very subtle difference between the two:
 
