@@ -19,7 +19,7 @@ caption = ""
 preview = true
 +++
 
-tl;dr Choose `push_back` and only later change to `emplace_back` if it provides significant speed improvements when profiling.
+tl;dr `emplace_back` is often mistaken as a faster `push_back`, while it is in fact just a different tool. Do not blindly replace `push_back` by `emplace_back`, be careful of how you use `emplace_back`, since it can have unexpected consequences.
 
 I have repeatedly run into the choice of using `emplace_back` instead of `push_back` in C++. This short blog post serves as my take on this decision.
 
@@ -28,11 +28,13 @@ Both of the methods in the title, along with `insert` and `emplace`, are ways to
 1. `push_back` calls the constructor of the data that you intend to push and then pushes it to the container.
 2. `emplace_back` "constructs in place", so one skips an extra move operation, potentially creating faster bytecode. This is done by forwarding the arguments to the container's template type constructor.
 
-One could naively choose the faster method. Why even offer a slower alternative? Searching for the problem online yields a lengthy discussion on the [issue (emplace_back vs push_back)](https://stackoverflow.com/questions/4303513/push-back-vs-emplace-back). In summary, the discussion leans towards choosing the more efficient `emplace_back` to insert data into your container, however the reason it is not completely clear.
+On the surface, `emplace_back` might look like a faster `push_back`, but there is a subtle difference contained in the act of forwarding arguments. Searching for the problem online yields a lengthy discussion on the [issue (emplace_back vs push_back)](https://stackoverflow.com/questions/4303513/push-back-vs-emplace-back). In summary, the discussion leans towards choosing `emplace_back` to insert data into your container, however the reason is not completely clear.
 
 ## Be careful
 
-After searching a bit more I found [this post](https://abseil.io/tips/112), which stresses how careful one should be with this decision. Which kind of tells you to be careful. To further stress the ambiguity of the matter, the google c++ style guide does not provide an explicit preference. However, in their section on [implicit conversion](https://google.github.io/styleguide/cppguide.html#Implicit_Conversions), it becomes clear that the decision between the two methods is not completely obvious. The following code should make it clear why `emplace_back` is not worth the risk: 
+After searching a bit more I found [this post](https://abseil.io/tips/112), which stresses how careful one should be with this decision. To further stress the ambiguity of the matter, the google c++ style guide does not provide an explicit preference. 
+
+The following code should make it clear how `emplace_back` is different from `push_back`: 
 
 ```{cpp}
 #include<vector>
@@ -76,11 +78,11 @@ data_vec size: 1
 data_vec[0] size: 20
 ```
 
-What is the difference? For `emplace_back` we **forward the arguments to the constructor**, adding a new `std::vector<int> new_vector_to_add(20)` to `data_vec`.  
+What is the difference? For `emplace_back` we **forward the arguments to the constructor**, adding a new `std::vector<int> new_vector_to_add(20)` to `data_vec`. This is the critical difference. So if you are using `emplace_back` you need to be a bit extra careful in double checking types.
 
 ## Another example with conversion
 
-The example above is very simple and shows the difference of forwarding arguments to the value type constructor or not. The following example I added in an [SO question](https://stackoverflow.com/questions/61592849/no-narrowing-warnings-when-using-emplace-back-instead-of-push-back) shows a bit more subtle case where `emplace_back` could make us miss catching a conversion from `double` to `int`.
+The example above is very simple and shows the difference of forwarding arguments to the value type constructor or not. The following example I added in an [SO question](https://stackoverflow.com/questions/61592849/no-narrowing-warnings-when-using-emplace-back-instead-of-push-back) shows a bit more subtle case where `emplace_back` could make us miss catching a narrowing conversion from `double` to `int`.
 
 ```{cpp}
 #include <vector>
@@ -134,4 +136,4 @@ And there you have it - look at all the verbose output. The problem is not appar
 
 ## `emplace_back` is a premature optimization.
 
-Going from `push_back` to `emplace_back` is a small change that can usually wait. For safety, reliability, and maintainability reasons, it is better to write the code with `push_back`. This choice reduces the chance of pushing an unwanted hard to find implicit conversion into the codebase. Profiling the code might reveal opportunities to replace some `push_back` calls with `emplace_back`, but remember when optimizing to tread carefully.
+Going from `push_back` to `emplace_back` is a small change that can usually wait. If you want to use `emplace_back` from the start, then make sure you understand the differences. This is not just a faster `push_back`. For safety, reliability, and maintainability reasons, it is better to write the code with `push_back`. This choice reduces the chance of pushing an unwanted hard to find implicit conversion into the codebase, but you should weigh that risk against the potential speedups.
