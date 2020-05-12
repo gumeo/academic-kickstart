@@ -42,27 +42,27 @@ The following code should make it clear how `emplace_back` is different from `pu
 
 int main(){
   // Basic example
-  std::vector<int> data;
-  data.push_back(10);
-  data.emplace_back(20);
+  std::vector<int> foo;
+  foo.push_back(10);
+  foo.emplace_back(20);
 
   // More tricky example
-  std::vector<std::vector<int>> data_vec;
-  //data_vec.push_back(10); // Throws error!!!!
-  data_vec.emplace_back(20); // Compiles with no issue
-  std::cout << "data_vec size: " << data_vec.size() << "\n";
-  std::cout << "data_vec[0] size: " << data_vec[0].size() << "\n";
+  std::vector<std::vector<int>> foo_bar;
+  //foo_bar.push_back(10); // Throws error!!!!
+  foo_bar.emplace_back(20); // Compiles with no issue
+  std::cout << "foo_bar size: " << foo_bar.size() << "\n";
+  std::cout << "foo_bar[0] size: " << foo_bar[0].size() << "\n";
   return 0;
 }
 ```
 
-Uncommenting the line `data_vec.push_back(10)` yields the following compilation error.
+Uncommenting the line `foo_bar.push_back(10)` yields the following compilation error.
 
 ```
 $ g++ test.cpp -o test
 test.cpp: In function ‘int main()’:
 test.cpp:11:24: error: no matching function for call to ‘std::vector<std::vector<int> >::push_back(int)’
-   data_vec.push_back(10);
+   foo_bar.push_back(10);
                         ^
 ... Some more verbose diagnostic
 ```
@@ -74,11 +74,11 @@ The compilation completes without errors if we comment out the trouble line. Run
 
 ```
 $ ./test
-data_vec size: 1
-data_vec[0] size: 20
+foo_bar size: 1
+foo_bar[0] size: 20
 ```
 
-What is the difference? For `emplace_back` we **forward the arguments to the constructor**, adding a new `std::vector<int> new_vector_to_add(20)` to `data_vec`. This is the critical difference. So if you are using `emplace_back` you need to be a bit extra careful in double checking types.
+What is the difference? For `emplace_back` we **forward the arguments to the constructor**, adding a new `std::vector<int> new_vector_to_add(20)` to `foo_bar`. This is the critical difference. So if you are using `emplace_back` you need to be a bit extra careful in double checking types.
 
 ## Another example with conversion
 
