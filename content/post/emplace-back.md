@@ -32,7 +32,7 @@ On the surface, `emplace_back` might look like a faster `push_back`, but there i
 
 ## Be careful
 
-After searching a bit more I found [this post](https://abseil.io/tips/112), which stresses how careful one should be with this decision. To further stress the ambiguity of the matter, the google c++ style guide does not provide an explicit preference. 
+After searching a bit more I found [this post](https://abseil.io/tips/112), which stresses how careful one should be with this decision. To further stress the ambiguity of the matter, the google c++ style guide does not provide an explicit preference. The reason the don't state a preference, is because these are simply slightly different tools, and you should not use `emplace_back` unless you properly understand it. 
 
 The following code should make it clear how `emplace_back` is different from `push_back`: 
 
