@@ -32,7 +32,7 @@ On the surface, `emplace_back` might look like a faster `push_back`, but there i
 
 ## Be careful
 
-After searching a bit more I found [this post](https://abseil.io/tips/112), which stresses how careful one should be with this decision. To further stress the ambiguity of the matter, the google c++ style guide does not provide an explicit preference. The reason the don't state a preference, is because these are simply slightly different tools, and you should not use `emplace_back` unless you properly understand it. 
+After searching a bit more I found [this post](https://abseil.io/tips/112), which stresses how careful one should be. To further stress the ambiguity of the matter, the google c++ style guide does not provide an explicit preference. The reason they don't state a preference, is because these are simply slightly different tools, and you should not use `emplace_back` unless you properly understand it, and there is a proper reason for it. 
 
 The following code should make it clear how `emplace_back` is different from `push_back`: 
 
@@ -134,6 +134,24 @@ test_2.cpp:9:25:   required from here
 
 And there you have it - look at all the verbose output. The problem is not apparent from this wall of text for the uninitiated.
 
-## `emplace_back` is a premature optimization.
+## So when should you use `emplace_back`?
 
-Going from `push_back` to `emplace_back` is a small change that can usually wait. If you want to use `emplace_back` from the start, then make sure you understand the differences. This is not just a faster `push_back`. For safety, reliability, and maintainability reasons, it is better to write the code with `push_back`. This choice reduces the chance of pushing an unwanted hard to find implicit conversion into the codebase, but you should weigh that risk against the potential speedups.
+One reason to use `emplace_back` is when the move operation that we can save, is actually quite expensive. Consider the following example:
+
+```
+class Image {
+  Image(size_t w, size_t h);
+};
+
+std::vector<Image> images;
+images.emplace_back(2000, 1000);
+```
+
+Instead of moving the image, which consists of potentially a lot of data, we construct it in place, and forward the constructor arguments in order to do that. These kind of cases are quite special, we should already be aware that this is *large* data that we are adding to the container.
+
+Another case for using `emplace_back` was added in C++17. Then `emplace_back` returns a reference to the inserted element, this is not possible at all with `push_back`.
+
+
+## `emplace_back` is a potential premature optimization.
+
+Going from `push_back` to `emplace_back` is a small change that can usually wait, and like the image case, it is usually quite apparent when we want to use it. If you want to use `emplace_back` from the start, then make sure you understand the differences. This is not just a faster `push_back`. For safety, reliability, and maintainability reasons, it is better to write the code with `push_back` when in doubt. This choice reduces the chance of pushing an unwanted hard to find implicit conversion into the codebase, but you should weigh that risk against the potential speedups, these speedups should then ideally be evaluated when profiling.
