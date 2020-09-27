@@ -1,56 +1,32 @@
-# For building
+<p align="center"><a href="https://wowchemy.com" target="_blank" rel="noopener"><img src="https://wowchemy.com/img/logo_200px.png" alt="Wowchemy Website Builder"></a></p>
 
-This currently works with hugo 0.4. There is something breaking in the newest hugo version (currently 0.7). I'm guessing it is because the theme is so far behind. Next time I write a post I will probably structure this "source" for the blog a bit differently and update to master or choose another theme.
+# Academic Template for [Hugo](https://github.com/gohugoio/hugo)
 
-# Academic Kickstart
+The Hugo **Academic Resumé Template** empowers you to create your job-winning online resumé and showcase your academic publications.
 
-**Academic** is a framework to help you create a beautiful website quickly. Perfect for personal, student, or academic websites. [Check out the latest demo](https://themes.gohugo.io/theme/academic/) of what you'll get in less than 10 minutes or [view the documentation](https://sourcethemes.com/academic/docs/).
+[Check out the latest demo](https://academic-demo.netlify.app) of what you'll get in less than 10 minutes, or [view the showcase](https://wowchemy.com/user-stories/).
 
-**Academic Kickstart** provides a minimal template to kickstart your new website by following the simple steps below.
+[**Wowchemy**](https://wowchemy.com) makes it easy to create a beautiful website for free. Edit your site in Markdown, Jupyter, or RStudio (via Blogdown), generate it with Hugo, and deploy with GitHub or Netlify. Customize anything on your site with widgets, themes, and language packs.
 
-[![Screenshot](https://raw.githubusercontent.com/gcushen/hugo-academic/master/academic.png)](https://github.com/gcushen/hugo-academic/)
+- 👉 [**Get Started**](https://wowchemy.com/docs/install/)
+- 📚 [View the **documentation**](https://wowchemy.com/docs/)
+- 💬 [Chat with the **Wowchemy community**](https://discord.gg/z8wNYzb) or [**Hugo community**](https://discourse.gohugo.io)
+- 🐦 Twitter: [@wowchemy](https://twitter.com/wowchemy) [@GeorgeCushen](https://twitter.com/GeorgeCushen) [#MadeWithWowchemy](https://twitter.com/search?q=(%23MadeWithWowchemy%20OR%20%23MadeWithAcademic)&src=typed_query)
+- 💡 [Request a **feature** or report a **bug** for _Wowchemy_](https://github.com/wowchemy/wowchemy-hugo-modules/issues)
+- ⬆️ **Updating Wowchemy?** View the [Update Guide](https://wowchemy.com/docs/update/) and [Release Notes](https://wowchemy.com/updates/)
 
-## Getting Started
+## Crowd-funded open-source software
 
-The following two methods describe how to install in the cloud using your web browser and how to install on your PC using the Command Prompt/Terminal app.
+To help us develop this template and software sustainably under the MIT license, we ask all individuals and businesses that use it to help support its ongoing maintenance and development via sponsorship.
 
-### Quick install using your web browser
+### [❤️ Click here to unlock rewards with sponsorship](https://wowchemy.com/plans/)
 
-1. [Install Academic with Netlify](https://app.netlify.com/start/deploy?repository=https://github.com/sourcethemes/academic-kickstart)
-    * Netlify will provide you with a customizable URL to access your new site
-2. On GitHub, go to your newly created `academic-kickstart` repository and edit `config.toml` to personalize your site. Shortly after saving the file, your site will automatically update
-3. Read the [Quick Start Guide](https://sourcethemes.com/academic/docs/) to learn how to add Markdown content. For inspiration, refer to the [Markdown content](https://github.com/gcushen/hugo-academic/tree/master/exampleSite) which powers the [Demo](https://themes.gohugo.io/theme/academic/)
+## Ecosystem
 
-### Install on your PC
+* **[Wowchemy Admin](https://github.com/wowchemy/wowchemy-admin/):** An admin tool to import publications from BibTeX
 
-Prerequisites:
+[![Screenshot](https://raw.githubusercontent.com/wowchemy/wowchemy-hugo-modules/master/academic.png)](https://wowchemy.com)
 
-* [Download and install Git](https://git-scm.com/downloads)
-* [Download and install Hugo](https://gohugo.io/getting-started/installing/#quick-install)
-
-1. Clone (or [Fork](https://github.com/sourcethemes/academic-kickstart#fork-destination-box) or [download](https://github.com/sourcethemes/academic-kickstart/archive/master.zip)) the *Academic Kickstart* repository with Git: 
-
-       git clone https://github.com/sourcethemes/academic-kickstart.git My_Website
-    
-    *Note that if you forked Academic Kickstart, the above command should be edited to clone your fork.*
-
-2. Initialize the theme:
-
-       cd My_Website
-       git submodule update --init --recursive
-
-3. View your new website:
-      
-       hugo server
-
-    Now you can go to [localhost:1313](http://localhost:1313) and your new Academic powered website should appear.
-  
-4. Read the [Quick Start Guide](https://sourcethemes.com/academic/docs/) to learn how to add Markdown content, customize your site, and deploy it.
-
-## License
-
-Copyright 2017 [George Cushen](https://georgecushen.com).
-
-Released under the [MIT](https://github.com/sourcethemes/academic-kickstart/blob/master/LICENSE.md) license.
-
+<!--
 [![Analytics](https://ga-beacon.appspot.com/UA-78646709-2/academic-kickstart/readme?pixel)](https://github.com/igrigorik/ga-beacon)
+-->

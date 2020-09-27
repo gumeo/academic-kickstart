@@ -1,40 +1,14 @@
 +++
-# About/Biography widget.
-widget = "about"
-active = true
-date = 2018-05-14T00:00:00
+# About widget.
+widget = "about"  # See https://sourcethemes.com/academic/docs/page-builder/
+headless = true  # This file represents a page section.
+active = true  # Activate this widget? true/false
+weight = 20  # Order that this section will appear in.
 
-# Order that this section will appear in.
-weight = 1
+title = "Biography"
 
-# List your academic interests.
-[interests]
-  interests = [
-    "Statistical Learning",
-    "Geometric Deep Learning",
-    "Image Analysis & Computer Vision"
-  ]
-
-# List your qualifications (such as academic degrees).
-[[education.courses]]
-  course = "PhD in Computer Science"
-  institution = "Technical University of Denmark"
-  year = 2018
-
-[[education.courses]]
-  course = "MSc in Mathematics"
-  institution = "University of Iceland"
-  year = 2014
-
-[[education.courses]]
-  course = "BSc in Mathematics"
-  institution = "University of Iceland"
-  year = 2012
- 
+# Choose the user profile to display
+# This should be the username of a profile in your `content/authors/` folder.
+# See https://sourcethemes.com/academic/docs/get-started/#introduce-yourself
+author = "admin"
 +++
-
-# Biography
-
-Currently I am employed as a senior software engineer at [Oqton](https://www.oqton.com/), working with awesome talented people building *the operating system for intelligent factories*.
-
-Prior I was employed as a postdoctoral researcher at *DTU Compute* in the **Image Analysis and Computer Graphics** group. I focused my research on Geometric Deep Learning ([gdl Journal Club](http://geo-dl.compute.dtu.dk)) and I did a short research stay at deCODE genetics, working on signal processing, image analysis and statistics. In my PhD I worked primarily on methods and applications in the domain of statistical learning. My PhD thesis is titled [*Sparse Classification - Methods and Applications*](http://orbit.dtu.dk/ws/files/146993098/phd471_Einarsson_G.pdf). Accompanying my thesis is the R-package [accSDA](https://github.com/gumeo/accSDA), also available on CRAN.
